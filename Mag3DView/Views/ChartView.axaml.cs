@@ -5,9 +5,9 @@ using Mag3DView.Nzy3dAPI.Plot3D.Primitives;
 using Mag3DView.Nzy3dAPI.Maths;
 using Mag3DView.Nzy3dAPI.Chart;
 using ChartNamespace = Mag3DView.Nzy3dAPI.Chart;
+using Mag3DView.Nzy3d.Avalonia.ChartView;
 
-
-namespace Mag3DView.Nzy3d.Avalonia.ChartView
+namespace Mag3DView.Views
 {
     public partial class ChartView : UserControl
     {
@@ -27,16 +27,16 @@ namespace Mag3DView.Nzy3d.Avalonia.ChartView
 
         private void InitializeChart()
         {
-            var canvas = new OpenGLCanvas(); 
+            var canvas = new OpenGLCanvas();
             _chart = new Mag3DView.Nzy3dAPI.Chart.Chart(canvas);
 
-            var drawable = new Surface((x, y) => x * x + y * y, gridSize: 100, scale: 1.0f); 
+            var drawable = new Surface((x, y) => x * x + y * y, gridSize: 100, scale: 1.0f);
             _chart.AddDrawable(drawable);
 
             var openGlHost = this.FindControl<ContentControl>("OpenGlHost");
             if (openGlHost != null)
             {
-                openGlHost.Content = canvas;  
+                openGlHost.Content = canvas;
             }
         }
 
@@ -66,3 +66,4 @@ namespace Mag3DView.Nzy3d.Avalonia.ChartView
         }
     }
 }
+
