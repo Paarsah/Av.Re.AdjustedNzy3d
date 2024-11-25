@@ -22,4 +22,10 @@
     <PackageReference Include="Avalonia.ReactiveUI" Version="11.2.1" />
     <PackageReference Include="OpenTK" Version="4.8.2" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Nzy3d.Avalonia\Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+  </ItemGroup>
 </Project>
