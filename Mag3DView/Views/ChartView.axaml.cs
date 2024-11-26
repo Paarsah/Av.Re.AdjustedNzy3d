@@ -5,7 +5,7 @@ using Mag3DView.Nzy3dAPI.Plot3D.Primitives;
 using Mag3DView.Nzy3dAPI.Maths;
 using Mag3DView.Nzy3dAPI.Chart;
 using ChartNamespace = Mag3DView.Nzy3dAPI.Chart;
-using Mag3DView.Nzy3d.Avalonia.ChartView;
+using Mag3DView.Views.Nzy3d.Avalonia.ChartView;
 
 namespace Mag3DView.Views
 {

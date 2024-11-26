@@ -12,13 +12,14 @@ using System.Globalization;
 using System.IO;
 using Color = Mag3DView.Nzy3dAPI.Colors.Color;
 using ColorMapper = Mag3DView.Nzy3dAPI.Colors.ColorMapper;
+using Mag3DView.Nzy3d.Avalonia;
 
-namespace Mag3DView.Nzy3d.Avalonia.ChartView
+namespace Mag3DView.Views.Nzy3d.Avalonia.ChartView
 {
 
     internal static class ChartsHelper
     {
-        public static Mag3DView.Nzy3dAPI.Chart.Chart GetIssue16(Renderer3D renderer3D)
+        public static Chart GetIssue16(Renderer3D renderer3D)
         {
             var chart = InitializeChart(renderer3D);
 
@@ -31,7 +32,8 @@ namespace Mag3DView.Nzy3d.Avalonia.ChartView
             };
 
             // Assuming BuildDelaunay returns a Surface object, use Surface
-            var surface = new Surface((x, y) => {
+            var surface = new Surface((x, y) =>
+            {
                 // Custom function to create surface, e.g. based on your data
                 return 0f;  // Just an example, use your surface function here
             }, 10); // Example grid size
@@ -43,7 +45,7 @@ namespace Mag3DView.Nzy3d.Avalonia.ChartView
             return chart;
         }
 
-        public static Mag3DView.Nzy3dAPI.Chart.Chart GetMapperSurface(Renderer3D renderer3D)
+        public static Chart GetMapperSurface(Renderer3D renderer3D)
         {
             var chart = InitializeChart(renderer3D);
 
@@ -51,7 +53,8 @@ namespace Mag3DView.Nzy3d.Avalonia.ChartView
             const int steps = 50;
 
             // Assuming BuildDelaunay returns a Surface object, use Surface
-            var surface = new Surface((x, y) => {
+            var surface = new Surface((x, y) =>
+            {
                 // Custom function to create surface, e.g. based on your data
                 return 0f;  // Just an example, use your surface function here
             }, 10); // Example grid size
@@ -62,7 +65,7 @@ namespace Mag3DView.Nzy3d.Avalonia.ChartView
             return chart;
         }
 
-        public static Mag3DView.Nzy3dAPI.Chart.Chart GetFRB_H15_dec_2021(Renderer3D renderer3D, string csvFilePath)
+        public static Chart GetFRB_H15_dec_2021(Renderer3D renderer3D, string csvFilePath)
         {
             if (!File.Exists(csvFilePath))
                 throw new FileNotFoundException($"The file '{csvFilePath}' does not exist.");
@@ -118,7 +121,8 @@ namespace Mag3DView.Nzy3d.Avalonia.ChartView
 
             // Build surface and add to the chart
             // Assuming BuildDelaunay returns a Surface object, use Surface
-            var surface = new Surface((x, y) => {
+            var surface = new Surface((x, y) =>
+            {
                 // Custom function to create surface, e.g. based on your data
                 return 0f;  // Just an example, use your surface function here
             }, 10); // Example grid size
@@ -131,9 +135,9 @@ namespace Mag3DView.Nzy3d.Avalonia.ChartView
         }
 
 
-        private static Mag3DView.Nzy3dAPI.Chart.Chart InitializeChart(Renderer3D renderer3D)
+        private static Chart InitializeChart(Renderer3D renderer3D)
         {
-            var chart = new Mag3DView.Nzy3dAPI.Chart.Chart(renderer3D, Quality.Nicest)
+            var chart = new Chart(renderer3D, Quality.Nicest)
             {
                 View =
                 {

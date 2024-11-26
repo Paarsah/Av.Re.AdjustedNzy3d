@@ -1,7 +1,7 @@
 ﻿using Mag3DView.Nzy3dAPI.Plot3D.Builder;
 using static System.Math;
 
-namespace Mag3DView.Nzy3d.Avalonia.ChartView
+namespace Mag3DView.Views.Nzy3d.Avalonia.ChartView
 {
     /// <summary>
     /// Custom mapper defining various 3D surface equations for chart rendering.
@@ -44,7 +44,7 @@ namespace Mag3DView.Nzy3d.Avalonia.ChartView
         /// </summary>
         private static double SquareCubicCurve(double x, double y, double a = 0.0000005f, double b = 0.0000005f)
         {
-            return (x * x * y * y * y * b) - (y * y * x * x * x * a);
+            return x * x * y * y * y * b - y * y * x * x * x * a;
         }
 
         private static double MountHole(double x, double z, double a = 0.0005f, double b = 0.0005f)

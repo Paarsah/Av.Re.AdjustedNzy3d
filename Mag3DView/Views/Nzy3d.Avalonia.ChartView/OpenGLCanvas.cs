@@ -9,7 +9,7 @@ using Mag3DView.Nzy3dAPI.Plot3D.Rendering.Canvas;
 using Mag3DView.Nzy3dAPI.Plot3D.Rendering.View;
 using OpenTK.Graphics.OpenGL;
 
-namespace Mag3DView.Nzy3d.Avalonia.ChartView
+namespace Mag3DView.Views.Nzy3d.Avalonia.ChartView
 {
 
     public class OpenGLCanvas : ICanvas
