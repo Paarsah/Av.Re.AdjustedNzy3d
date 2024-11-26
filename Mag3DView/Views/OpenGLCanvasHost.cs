@@ -18,28 +18,19 @@ namespace Mag3DView.Views
 
         private void InitializeOpenGL()
         {
-            // Use GlProfileType.OpenGL for OpenGL rendering
             GlProfileType profile = GlProfileType.OpenGL; // Use OpenGL profile
+            GlVersion glVersion = new GlVersion(profile, 4, 5); // OpenGL version 4.5
 
-            // Create a GlVersion for OpenGL 4.5 with the chosen profile
-            GlVersion glVersion = new GlVersion(profile, 4, 5); // Using GlProfileType.OpenGL
-
-            // Create the GlInterface with the GlVersion and a simple ProcAddress lookup
-            glInterface = new GlInterface(glVersion, proc => IntPtr.Zero); // Replace IntPtr.Zero with actual proc address lookup logic
+            glInterface = new GlInterface(glVersion, proc => IntPtr.Zero); // Replace with your actual ProcAddress lookup
             glContext = new AvaloniaTkContext(glInterface);
 
-            // Load OpenGL bindings using the context
+            // Load OpenGL bindings
             GL.LoadBindings(glContext);
 
-            // Query OpenGL version
+            // Query OpenGL version to confirm
             string version = GL.GetString(StringName.Version);
             Console.WriteLine("OpenGL Version: " + version);
-
-            // Now OpenGL functions can be safely called
-            // Example: Generate a vertex array object
-            int vertexArrayObject = GL.GenVertexArray();
-
-            // Continue with your OpenGL initialization...
         }
+
     }
 }

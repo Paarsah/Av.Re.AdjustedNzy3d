@@ -16,32 +16,31 @@ namespace Mag3DView.Nzy3dAPI.Plot3D.Primitives
         private int vertexBufferObject;
         private int indexBufferObject;
 
-        // Properties mimicking the ones expected
-        public bool FaceDisplayed { get; set; } = true;
-        public bool WireframeDisplayed { get; set; } = true;
+        public bool FaceDisplayed { get; set; } = true;  // Default to true
+        public bool WireframeDisplayed { get; set; } = true;  // Default to true
         public Color WireframeColor { get; set; } = new Color(1, 1, 1, 1); // Default to white
         public ColorMapper ColorMapper { get; set; }
         public Bounds Bounds { get; private set; }
 
-        // Constructor to create the surface based on the provided mathematical function
+        // Constructor (keep this without OpenGL initialization)
         public Surface(Func<float, float, float> surfaceFunction, int gridSize, float scale = 1f)
         {
             vertices = new List<Vector3>();
             indices = new List<int>();
 
-            // Create the grid of vertices (points)
+            // Create the grid of vertices
             for (int i = 0; i < gridSize; i++)
             {
                 for (int j = 0; j < gridSize; j++)
                 {
                     float x = i * scale;
                     float y = j * scale;
-                    float z = surfaceFunction(x, y); // Calculate Z value from the function
+                    float z = surfaceFunction(x, y);
                     vertices.Add(new Vector3(x, y, z));
                 }
             }
 
-            // Generate indices to connect the vertices into triangles
+            // Generate indices to connect the vertices
             for (int i = 0; i < gridSize - 1; i++)
             {
                 for (int j = 0; j < gridSize - 1; j++)
@@ -51,27 +50,18 @@ namespace Mag3DView.Nzy3dAPI.Plot3D.Primitives
                     int bottomLeft = (i + 1) * gridSize + j;
                     int bottomRight = bottomLeft + 1;
 
-                    // First triangle (top-left, bottom-left, top-right)
                     indices.Add(topLeft);
                     indices.Add(bottomLeft);
                     indices.Add(topRight);
-
-                    // Second triangle (top-right, bottom-left, bottom-right)
                     indices.Add(topRight);
                     indices.Add(bottomLeft);
                     indices.Add(bottomRight);
                 }
             }
-
-            // Initialize OpenGL buffers for rendering
-            InitializeBuffers();
-
-            // Calculate Bounds after vertices are populated
-            CalculateBounds();
         }
 
-        // Initialize OpenGL buffers for vertices and indices
-        private void InitializeBuffers()
+        // Initialize OpenGL buffers (called after OpenGL context is set up)
+        public void InitializeOpenGLBuffers()
         {
             vertexArrayObject = GL.GenVertexArray();
             vertexBufferObject = GL.GenBuffer();
@@ -94,19 +84,14 @@ namespace Mag3DView.Nzy3dAPI.Plot3D.Primitives
             GL.BindVertexArray(0);
         }
 
-        // Implement the abstract Draw method from AbstractDrawable
         public override void Draw(Camera cam)
         {
-            // You can implement any specific drawing behavior based on the camera's view here if needed.
-            // For now, we'll call the Render method as part of the drawing logic.
             Render();
         }
 
-        // Render the surface using OpenGL
         public void Render()
         {
             GL.BindVertexArray(vertexArrayObject);
-
             if (FaceDisplayed)
             {
                 GL.DrawElements(PrimitiveType.Triangles, indices.Count, DrawElementsType.UnsignedInt, nint.Zero);
@@ -116,25 +101,10 @@ namespace Mag3DView.Nzy3dAPI.Plot3D.Primitives
             {
                 GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Line);
                 GL.DrawElements(PrimitiveType.Triangles, indices.Count, DrawElementsType.UnsignedInt, nint.Zero);
-                GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Fill); // Reset to fill mode
+                GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Fill);
             }
 
             GL.BindVertexArray(0);
-        }
-
-        // Calculate the bounds of the surface (min/max Z values)
-        private void CalculateBounds()
-        {
-            float minZ = float.MaxValue;
-            float maxZ = float.MinValue;
-
-            foreach (var vertex in vertices)
-            {
-                if (vertex.Z < minZ) minZ = vertex.Z;
-                if (vertex.Z > maxZ) maxZ = vertex.Z;
-            }
-
-            Bounds = new Bounds(minZ, maxZ);
         }
     }
 
