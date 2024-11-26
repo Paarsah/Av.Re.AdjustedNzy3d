@@ -1,28 +1,45 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.OpenGL;
-using Avalonia.OpenGL.Controls;
-using Mag3DView.Views.Nzy3d.Avalonia.ChartView;
-
+using OpenTK.Graphics.OpenGL;
+using OpenTK.Mathematics;
+using System;
 
 namespace Mag3DView.Views
 {
-    public class OpenGLCanvasHost : OpenGlControlBase
+    public class OpenGLCanvasHost : Control
     {
-        private readonly OpenGLCanvas _canvas;
+        private AvaloniaTkContext glContext; // Context to manage OpenGL interface
+        private GlInterface glInterface; // Direct interface to interact with OpenGL
 
-        public OpenGLCanvasHost(OpenGLCanvas canvas)
+        public OpenGLCanvasHost()
         {
-            _canvas = canvas;
+            this.Loaded += (sender, e) => InitializeOpenGL();
         }
 
-        protected override void OnOpenGlRender(GlInterface gl, int fb)
+        private void InitializeOpenGL()
         {
-            _canvas.Render();
+            // Use GlProfileType.OpenGL for OpenGL rendering
+            GlProfileType profile = GlProfileType.OpenGL; // Use OpenGL profile
+
+            // Create a GlVersion for OpenGL 4.5 with the chosen profile
+            GlVersion glVersion = new GlVersion(profile, 4, 5); // Using GlProfileType.OpenGL
+
+            // Create the GlInterface with the GlVersion and a simple ProcAddress lookup
+            glInterface = new GlInterface(glVersion, proc => IntPtr.Zero); // Replace IntPtr.Zero with actual proc address lookup logic
+            glContext = new AvaloniaTkContext(glInterface);
+
+            // Load OpenGL bindings using the context
+            GL.LoadBindings(glContext);
+
+            // Query OpenGL version
+            string version = GL.GetString(StringName.Version);
+            Console.WriteLine("OpenGL Version: " + version);
+
+            // Now OpenGL functions can be safely called
+            // Example: Generate a vertex array object
+            int vertexArrayObject = GL.GenVertexArray();
+
+            // Continue with your OpenGL initialization...
         }
     }
 }
